@@ -61,10 +61,10 @@
 </body>
 
 <script>
-    fetch('http://localhost:3000/api/photos').then(res => res.json()).then(data => {
+    fetch('http://localhost:8080/api/photos').then(res => res.json()).then(data => {
         const html = data.map((array) => {
             return `
-        <img src="http://localhost:3000/api/photo/${array}" />
+        <img src="http://localhost:8080/api/photo/${array}" />
       `
         }).join('');
         document
@@ -75,7 +75,7 @@
     formElem.onsubmit = async (e) => {
         e.preventDefault();
 
-        let response = await fetch('http://localhost:3000/api/uploadphoto', {
+        let response = await fetch('http://localhost:8080/api/uploadphoto', {
             method: 'POST',
             body: new FormData(formElem)
         });

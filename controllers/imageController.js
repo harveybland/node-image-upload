@@ -31,17 +31,17 @@ core.app.post(
       });
       const images = await schemas.imagesModel.find();
       const imgArray = images.map((element) => element._id);
-      resp.status(200).json(imgArray);
+      res.status(200).json(imgArray);
     } catch (error) {
       res.status(400).json(error);
     }
   }
 );
 
-core.app.get('/api/photos', async (req, resp) => {
+core.app.get('/api/photos', async (req, res) => {
   const images = await schemas.imagesModel.find();
   const imgArray = images.map((element) => element._id);
-  resp.status(200).json(imgArray);
+  res.status(200).json(imgArray);
 });
 
 core.app.get('/api/photo/:id', (req, res) => {
@@ -55,7 +55,8 @@ core.app.get('/api/photo/:id', (req, res) => {
 
       var buffer = Buffer.from(new Uint8Array(result.image.buffer));
       res.contentType('image/jpeg');
-      res.send(buffer);
+      // res.send(buffer);
+      res.status(200).send(buffer);
     }
   );
 });
