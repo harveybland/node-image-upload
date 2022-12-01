@@ -17,20 +17,26 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-core.app.post('/api/uploadphoto', upload.single('myImage'), (req, res) => {
-  try {
-    var img = fs.readFileSync(req.file.path);
-    var encode_image = img.toString('base64');
+core.app.post(
+  '/api/uploadphoto',
+  upload.single('myImage'),
+  async (req, res) => {
+    try {
+      var img = fs.readFileSync(req.file.path);
+      var encode_image = img.toString('base64');
 
-    schemas.imagesModel.create({
-      contentType: req.file.mimetype,
-      image: Buffer.from(encode_image, 'base64'),
-    });
-    res.redirect('/');
-  } catch (error) {
-    res.status(400).json(error);
+      schemas.imagesModel.create({
+        contentType: req.file.mimetype,
+        image: Buffer.from(encode_image, 'base64'),
+      });
+      const images = await schemas.imagesModel.find();
+      const imgArray = images.map((element) => element._id);
+      resp.status(200).json(imgArray);
+    } catch (error) {
+      res.status(400).json(error);
+    }
   }
-});
+);
 
 core.app.get('/api/photos', async (req, resp) => {
   const images = await schemas.imagesModel.find();
